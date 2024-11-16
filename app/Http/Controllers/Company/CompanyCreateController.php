@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Str;
@@ -22,24 +20,20 @@ class CompanyCreateController extends Controller
     public function store(Request $request): Response
     {
         $request->validate([
+            'id' => ['required', 'max:255', 'unique:'.Company::class],
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
+        $company = Company::create([
             'id' => (string)Str::uuid(), 
-            'cuit' => $request->cuit,
             'name' => $request->name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->string('password')),
         ]);
 
-        event(new Registered($user));
+        event(new Registered($company));
 
-        Auth::login($user);
+        Auth::login($company);
 
         return response()->noContent();
     }
+    
 }
