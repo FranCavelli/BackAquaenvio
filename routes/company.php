@@ -8,9 +8,9 @@ Route::post('/company', [CompanyCreateController::class, 'store'])
                 ->middleware('auth')
                 ->name('company.create');
 
-Route::get('/companys', [CompanysListController::class, 'list'])
+Route::get('/getCompanys', [CompanysListController::class, 'getCompanys'])
                 ->middleware('auth')
-                ->name('company.list');
+                ->name('company.getCompanys');
 
 Route::get('/companysByUser', [CompanysListController::class, 'listByUser'])
                 ->middleware('auth')

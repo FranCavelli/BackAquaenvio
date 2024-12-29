@@ -34,4 +34,26 @@ class CompanysListController extends Controller
 
         return response()->json($companies);
     }
+    public function getCompanys(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+        
+        if (!$user) {
+            return response()->json([
+                'message' => 'No estás autenticado.',
+                'error' => 1
+            ], 200);
+        }
+        
+        $companies = Company::getCompanys();
+
+        if ($companies->isEmpty()) {
+            return response()->json([
+                'message' => 'No se encontraron empresas para mostrar.',
+                'error' => 2
+            ], 200);
+        }
+
+        return response()->json($companies);
+    }
 }

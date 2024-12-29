@@ -25,9 +25,17 @@ class Company extends Model
     public static function getCompaniesByUser($userId)
     {
         return DB::table('companies')
-            ->join('company_users', 'companies.id', '=', 'company_users.company_id')
-            ->where('company_users.user_id', $userId)
+            ->join('companies_users', 'companies.id', '=', 'companies_users.company_id')
+            ->where('companies_users.user_id', $userId)
             ->select('companies.*')
+            ->orderBy('companies.name')
+            ->get();
+    }
+    public static function getCompanys()
+    {
+        return DB::table('companies')
+            ->select('companies.*')
+            ->orderBy('companies.name')
             ->get();
     }
 

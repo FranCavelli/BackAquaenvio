@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+  webserver:
+    image: nginx:alpine
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+  db:
+    image: mysql:8.3
+    environment:
+      MYSQL_DATABASE: aquaenvio
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      MYSQL_RANDOM_ROOT_PASSWORD:
+    ports:
+      - "3306:3306"
+
